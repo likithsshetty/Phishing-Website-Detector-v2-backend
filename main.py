@@ -232,3 +232,6 @@ def delete_url():
 
     logging.info(f"URL {url} deleted successfully for user {username}")
     return jsonify({"message": "URL deleted successfully"}), 200
+
+if __name__ == '__main__':
+    app.run(debug=False)
