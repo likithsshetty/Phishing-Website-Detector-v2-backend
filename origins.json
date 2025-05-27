@@ -1,6 +1,8 @@
 {
   "origins": [
+    "http://localhost:5000/*",
     "http://localhost:3000/*",
-    "chrome-extension://*"
+    "https://localhost:5000/*",
+    "chrome-extension://*/*"
   ]
 }

@@ -5,7 +5,7 @@ import numpy as np
 import jwt
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
@@ -21,7 +21,7 @@ def get_origins():
     return data.get('origins', [])
 
 # Initialize Flask app
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 CORS(app, supports_credentials=True, origins=get_origins(), allow_headers=["Authorization", "Content-Type", "authToken"])
 
 # MongoDB URI and Secret Key
@@ -100,6 +100,14 @@ def log_request():
     logging.info(f"Incoming request: {request.method} {request.url} - Headers: {dict(request.headers)}")
 
 # API Endpoints
+@app.route('/')
+def index():
+    return send_from_directory(app.static_folder, 'index.html')
+
+@app.route('/<path:path>')
+def serve_static(path):
+    return send_from_directory(app.static_folder, path)
+
 @app.route('/api/v1/register', methods=['POST'])
 def register_user():
     data = request.get_json()
@@ -234,4 +242,4 @@ def delete_url():
     return jsonify({"message": "URL deleted successfully"}), 200
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=False, host='0.0.0.0')
