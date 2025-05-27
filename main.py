@@ -5,7 +5,7 @@ import numpy as np
 import jwt
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from flask_bcrypt import Bcrypt
@@ -100,14 +100,6 @@ def log_request():
     logging.info(f"Incoming request: {request.method} {request.url} - Headers: {dict(request.headers)}")
 
 # API Endpoints
-@app.route('/')
-def index():
-    return send_from_directory(app.static_folder, 'index.html')
-
-@app.route('/<path:path>')
-def serve_static(path):
-    return send_from_directory(app.static_folder, path)
-
 @app.route('/api/v1/register', methods=['POST'])
 def register_user():
     data = request.get_json()
